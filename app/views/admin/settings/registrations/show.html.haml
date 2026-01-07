@@ -30,14 +30,6 @@
                 disabled: !approved_registrations?,
                 wrapper: :with_label
 
-  .fields-row
-    .fields-row__column.fields-row__column-6.fields-group
-      = f.input :unverified_content_visible,
-                as: :boolean,
-                label: t('admin.settings.registrations.unverified_content_visible.title'),
-                hint: t('admin.settings.registrations.unverified_content_visible.hint'),
-                wrapper: :with_label
-
   - if captcha_available?
     .fields-group
       = f.input :captcha_enabled,

@@ -6,7 +6,7 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
   attributes :uri, :title, :short_description, :description, :email,
              :version, :urls, :stats, :thumbnail,
              :languages, :registrations, :approval_required, :invites_enabled,
-             :configuration, :require_verification, :unverified_content_visible
+             :configuration
 
   has_one :contact_account, serializer: REST::AccountSerializer
 
@@ -76,14 +76,6 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
         max_expiration: PollExpirationValidator::MAX_EXPIRATION,
       },
     }
-  end
-
-  def require_verification
-    Setting.require_verification
-  end
-
-  def unverified_content_visible
-    Setting.unverified_content_visible
   end
 
   def registrations

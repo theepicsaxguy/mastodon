@@ -30,8 +30,6 @@ class Form::AdminSettings
     allow_referrer_origin
     noindex
     require_invite_text
-    require_verification
-    unverified_content_visible
     media_cache_retention_period
     content_cache_retention_period
     backups_retention_period
@@ -67,8 +65,6 @@ class Form::AdminSettings
     trendable_by_default
     noindex
     require_invite_text
-    require_verification
-    unverified_content_visible
     captcha_enabled
     authorized_fetch
     wrapstodon
@@ -91,7 +87,7 @@ class Form::AdminSettings
 
   DESCRIPTION_LIMIT = 200
   DOMAIN_BLOCK_AUDIENCES = %w(disabled users all).freeze
-  REGISTRATION_MODES = %w(open open_verification approved none).freeze
+  REGISTRATION_MODES = %w(open approved none).freeze
   FEED_ACCESS_MODES = %w(public authenticated disabled).freeze
   ALTERNATE_FEED_ACCESS_MODES = %w(public authenticated).freeze
   LANDING_PAGE = %w(trends about local_feed).freeze
@@ -119,9 +115,7 @@ class Form::AdminSettings
     define_method(key) do
       return instance_variable_get(:"@#{key}") if instance_variable_defined?(:"@#{key}")
 
-      stored_value = if key == :registrations_mode
-                       registrations_mode_with_derivation
-                     elsif UPLOAD_KEYS.include?(key)
+      stored_value = if UPLOAD_KEYS.include?(key)
                        SiteUpload.where(var: key).first_or_initialize(var: key)
                      elsif OVERRIDEN_SETTINGS.include?(key)
                        public_send(OVERRIDEN_SETTINGS[key])
@@ -143,7 +137,6 @@ class Form::AdminSettings
   end
 
   def save
-    apply_registration_mode_derivatives if instance_variable_defined?("@registrations_mode")
     # NOTE: Annoyingly, files are processed and can error out before
     # validations are called, and `valid?` clears errors…
     # So for now, return early if errors aren't empty.
@@ -202,22 +195,5 @@ class Form::AdminSettings
         errors.import(error, attribute: key)
       end
     end
-  end
-
-  def apply_registration_mode_derivatives
-    case @registrations_mode
-    when 'open_verification'
-      @require_verification = true
-      @registrations_mode = 'open'
-    else
-      @require_verification = false unless instance_variable_defined?(:@require_verification)
-    end
-  end
-
-  def registrations_mode_with_derivation
-    mode = Setting.registrations_mode
-    return 'open_verification' if mode == 'open' && Setting.require_verification
-
-    mode
   end
 end

@@ -11,7 +11,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
 import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
 import CancelFillIcon from '@/material-icons/400-24px/cancel-fill.svg?react';
-import HomeIcon from '@/material-icons/400-24px/home.svg?react';
 import { Hotkeys } from 'mastodon/components/hotkeys';
 import { ContentWarning } from 'mastodon/components/content_warning';
 import { FilterWarning } from 'mastodon/components/filter_warning';
@@ -578,11 +577,6 @@ class Status extends ImmutablePureComponent {
             <div onClick={this.handleHeaderClick} onAuxClick={this.handleHeaderClick} className='status__info'>
               <Link to={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`} className='status__relative-time'>
                 <span className='status__visibility-icon'><VisibilityIcon visibility={status.get('visibility')} /></span>
-                  {(!status.getIn(['account', 'verified_at']) && status.get('local_only')) && (
-                    <span className='status__visibility-icon' title={intl.formatMessage({ id: 'status.local_only.tooltip', defaultMessage: "This post won't federate until account is verified" })}>
-                      <Icon id='home' icon={HomeIcon} />
-                    </span>
-                  )}
                 <RelativeTimestamp timestamp={status.get('created_at')} />{status.get('edited_at') && <abbr title={intl.formatMessage(messages.edited, { date: intl.formatDate(status.get('edited_at'), { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) })}> *</abbr>}
               </Link>
 

@@ -9,7 +9,6 @@ class REST::StatusSerializer < ActiveModel::Serializer
              :sensitive, :spoiler_text, :visibility, :language,
              :uri, :url, :replies_count, :reblogs_count,
              :favourites_count, :quotes_count, :edited_at
-  attribute :local_only
 
   attribute :favourited, if: :current_user?
   attribute :reblogged, if: :current_user?

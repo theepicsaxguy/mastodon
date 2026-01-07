@@ -151,7 +151,6 @@ class Status < ApplicationRecord
   before_validation :set_reblog
   before_validation :set_conversation
   before_validation :set_local
-  before_validation :apply_unverified_flags, if: :local?
 
   around_create Mastodon::Snowflake::Callbacks
 
@@ -268,10 +267,6 @@ class Status < ApplicationRecord
 
   def with_poll?
     preloadable_poll.present?
-  end
-
-  def unverified?
-    !!attributes['unverified']
   end
 
   def non_sensitive_with_media?
@@ -505,11 +500,5 @@ class Status < ApplicationRecord
 
   def trigger_update_webhooks
     TriggerWebhookWorker.perform_async('status.updated', 'Status', id) if local?
-  end
-
-  def apply_unverified_flags
-    unverified_status = account&.verified_at.nil?
-    self.unverified = unverified_status
-    self.local_only = unverified_status
   end
 end
