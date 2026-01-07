@@ -206,6 +206,14 @@ class Account < ApplicationRecord
     verified_at.present?
   end
 
+  def probationary?
+    !verified?
+  end
+
+  def moderation_pending?
+    user_pending? || probationary?
+  end
+
   def moved?
     moved_to_account_id.present?
   end

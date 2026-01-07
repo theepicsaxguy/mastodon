@@ -87,7 +87,7 @@ class AccountFilter
     when 'active'
       Account.without_suspended
     when 'pending'
-      accounts_with_users.merge(User.pending)
+      accounts_with_users.merge(User.pending.or(Account.where(verified_at: nil)))
     when 'suspended'
       Account.suspended
     when 'disabled'
