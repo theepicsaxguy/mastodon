@@ -96,6 +96,8 @@ class AccountFilter
       Account.silenced
     when 'sensitized'
       Account.sensitized
+    when 'probationary'
+      Account.probationary
     else
       raise Mastodon::InvalidParameterError, "Unknown status: #{value}"
     end

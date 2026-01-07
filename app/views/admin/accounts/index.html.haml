@@ -68,6 +68,13 @@
                      name: :reject,
                      type: :submit
 
+        - if @accounts.any? { |a| a.local? && a.verified_at.nil? }
+          = f.button safe_join([material_symbol('verified'), t('admin.accounts.verify')]),
+                     class: 'table-action-link',
+                     data: { confirm: t('admin.reports.are_you_sure') },
+                     name: :verify,
+                     type: :submit
+
         = f.button safe_join([material_symbol('lock'), t('admin.accounts.perform_full_suspension')]),
                    class: 'table-action-link',
                    data: { confirm: t('admin.reports.are_you_sure') },

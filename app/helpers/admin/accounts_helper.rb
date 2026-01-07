@@ -8,6 +8,7 @@ module Admin::AccountsHelper
       [t('admin.accounts.moderation.disabled'), 'disabled'],
       [t('admin.accounts.moderation.suspended'), 'suspended'],
       [safe_join([t('admin.accounts.moderation.pending'), "(#{pending_user_count_label})"], ' '), 'pending'],
+      [safe_join([t('admin.accounts.moderation.probationary'), "(#{probationary_user_count_label})"], ' '), 'probationary'],
     ]
   end
 
@@ -15,5 +16,9 @@ module Admin::AccountsHelper
 
   def pending_user_count_label
     number_with_delimiter User.pending.count
+  end
+
+  def probationary_user_count_label
+    number_with_delimiter Account.probationary.count
   end
 end

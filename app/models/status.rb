@@ -5,30 +5,31 @@
 # Table name: statuses
 #
 #  id                           :bigint(8)        not null, primary key
-#  uri                          :string
-#  text                         :text             default(""), not null
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
-#  in_reply_to_id               :bigint(8)
-#  reblog_of_id                 :bigint(8)
-#  url                          :string
-#  sensitive                    :boolean          default(FALSE), not null
-#  visibility                   :integer          default("public"), not null
-#  spoiler_text                 :text             default(""), not null
-#  reply                        :boolean          default(FALSE), not null
-#  language                     :string
-#  conversation_id              :bigint(8)
-#  local                        :boolean
-#  account_id                   :bigint(8)        not null
-#  application_id               :bigint(8)
-#  in_reply_to_account_id       :bigint(8)
-#  poll_id                      :bigint(8)
 #  deleted_at                   :datetime
 #  edited_at                    :datetime
-#  trendable                    :boolean
-#  ordered_media_attachment_ids :bigint(8)        is an Array
 #  fetched_replies_at           :datetime
+#  language                     :string
+#  local                        :boolean
+#  local_only                   :boolean          default(FALSE), not null
+#  ordered_media_attachment_ids :bigint(8)        is an Array
 #  quote_approval_policy        :integer          default(0), not null
+#  reply                        :boolean          default(FALSE), not null
+#  sensitive                    :boolean          default(FALSE), not null
+#  spoiler_text                 :text             default(""), not null
+#  text                         :text             default(""), not null
+#  trendable                    :boolean
+#  uri                          :string
+#  url                          :string
+#  visibility                   :integer          default("public"), not null
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  account_id                   :bigint(8)        not null
+#  application_id               :bigint(8)
+#  conversation_id              :bigint(8)
+#  in_reply_to_account_id       :bigint(8)
+#  in_reply_to_id               :bigint(8)
+#  poll_id                      :bigint(8)
+#  reblog_of_id                 :bigint(8)
 #
 
 class Status < ApplicationRecord
@@ -114,6 +115,7 @@ class Status < ApplicationRecord
   scope :recent, -> { reorder(id: :desc) }
   scope :remote, -> { where(local: false).where.not(uri: nil) }
   scope :local,  -> { where(local: true).or(where(uri: nil)) }
+  scope :local_only, -> { where(local_only: true) }
   scope :with_accounts, ->(ids) { where(id: ids).includes(:account) }
   scope :without_replies, -> { not_reply.or(reply_to_account) }
   scope :not_reply, -> { where(reply: false) }
@@ -470,6 +472,7 @@ class Status < ApplicationRecord
 
   def set_local
     self.local = account.local?
+    self.local_only = true if account.local? && account.verified_at.nil?
   end
 
   def update_statistics

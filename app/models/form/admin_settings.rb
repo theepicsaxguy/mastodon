@@ -87,7 +87,7 @@ class Form::AdminSettings
 
   DESCRIPTION_LIMIT = 200
   DOMAIN_BLOCK_AUDIENCES = %w(disabled users all).freeze
-  REGISTRATION_MODES = %w(open approved none).freeze
+  REGISTRATION_MODES = %w(open open_verification approved none).freeze
   FEED_ACCESS_MODES = %w(public authenticated disabled).freeze
   ALTERNATE_FEED_ACCESS_MODES = %w(public authenticated).freeze
   LANDING_PAGE = %w(trends about local_feed).freeze

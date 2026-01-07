@@ -409,6 +409,22 @@ export const DetailedStatus: React.FC<{
             />
           </div>
         )}
+        {status.get('local_only') &&
+          !status.getIn(['account', 'verified_at']) && (
+            <div className='status__prepend'>
+              <div className='status__prepend-icon-wrapper'>
+                <Icon
+                  id='lock'
+                  icon={LockIcon}
+                  className='status__prepend-icon'
+                />
+              </div>
+              <FormattedMessage
+                id='status.probationary_indicator'
+                defaultMessage='Probationary account'
+              />
+            </div>
+          )}
         <Link
           to={`/@${status.getIn(['account', 'acct'])}`}
           data-hover-card-account={status.getIn(['account', 'id'])}

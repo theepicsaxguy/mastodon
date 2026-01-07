@@ -273,6 +273,7 @@ namespace :api, format: false do
           post :unsuspend
           post :approve
           post :reject
+          post :verify
         end
 
         resource :action, only: [:create], controller: 'account_actions'

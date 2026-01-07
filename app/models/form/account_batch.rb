@@ -27,6 +27,8 @@ class Form::AccountBatch < Form::BaseBatch
       unsuppress_follow_recommendation!
     when 'suspend'
       suspend!
+    when 'verify'
+      verify!
     end
   end
 
@@ -139,6 +141,18 @@ class Form::AccountBatch < Form::BaseBatch
     authorize(account.user, :approve?)
     log_action(:approve, account.user)
     account.user.approve!
+  end
+
+  def verify!
+    accounts.includes(:user).find_each do |account|
+      verify_account(account)
+    end
+  end
+
+  def verify_account(account)
+    authorize(account, :verify?)
+    log_action(:verify, account)
+    account.update!(verified_at: Time.current)
   end
 
   def select_all_matching?

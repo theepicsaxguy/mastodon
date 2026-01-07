@@ -142,6 +142,7 @@ namespace :admin do
       post :memorialize
       post :approve
       post :reject
+      post :verify
       post :unblock_email
     end
 
