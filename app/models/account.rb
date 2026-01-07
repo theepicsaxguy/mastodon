@@ -51,6 +51,7 @@
 #  uri                           :string           default(""), not null
 #  url                           :string
 #  username                      :string           default(""), not null
+#  verified_at                   :datetime
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #  moved_to_account_id           :bigint(8)
@@ -162,6 +163,7 @@ class Account < ApplicationRecord
   scope :with_domain, ->(value) { where arel_table[:domain].lower.eq(value&.to_s&.downcase) }
   scope :without_memorial, -> { where(memorial: false) }
   scope :duplicate_uris, -> { select(:uri, Arel.star.count).group(:uri).having(Arel.star.count.gt(1)) }
+  scope :probationary, -> { where(verified_at: nil) }
 
   after_update_commit :trigger_update_webhooks
 
@@ -518,6 +520,6 @@ class Account < ApplicationRecord
   end
 
   def set_default_verified_at
-    self.verified_at ||= Time.current unless Setting.require_verification
+    self.verified_at ||= Time.current
   end
 end

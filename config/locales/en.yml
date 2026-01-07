@@ -98,6 +98,7 @@ en:
         all: All
         disabled: Disabled
         pending: Pending
+        probationary: Probationary
         silenced: Limited
         suspended: Suspended
         title: Moderation
@@ -169,6 +170,8 @@ en:
       unsubscribe: Unsubscribe
       unsuspended_msg: Successfully unsuspended %{username}'s account
       username: Username
+      verify: Verify
+      verify_msg: Successfully verified %{username}'s account
       view_domain: View summary for domain
       warn: Warn
       web: Web
@@ -872,6 +875,7 @@ en:
           approved: Approval required for sign up
           none: Nobody can sign up
           open: Anyone can sign up
+          open_verification: Anyone can sign up, but requires approval before posting
         warning_hint: We recommend using “Approval required for sign up” unless you are confident your moderation team can handle spam and malicious registrations in a timely fashion.
       security:
         authorized_fetch: Require authentication from federated servers

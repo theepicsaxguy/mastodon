@@ -30,7 +30,6 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:advanced_layout]   = object_account_user.setting_advanced_layout
       store[:use_blurhash]      = object_account_user.setting_use_blurhash
       store[:use_pending_items] = object_account_user.setting_use_pending_items
-      store[:show_unverified_content] = object_account_user.setting_show_unverified_content
       store[:show_trends]       = Setting.trends && object_account_user.setting_trends
       store[:emoji_style]       = object_account_user.settings['web.emoji_style']
       store[:wrapstodon]        = wrapstodon
@@ -123,8 +122,6 @@ class InitialStateSerializer < ActiveModel::Serializer
       source_url: instance_presenter.source_url,
       sso_redirect: sso_redirect,
       status_page_url: Setting.status_page_url,
-      require_verification: Setting.require_verification,
-      unverified_content_visible: Setting.unverified_content_visible,
       streaming_api_base_url: Rails.configuration.x.streaming_api_base_url,
       title: instance_presenter.title,
       landing_page: Setting.landing_page,
