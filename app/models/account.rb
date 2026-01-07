@@ -190,12 +190,18 @@ class Account < ApplicationRecord
 
   update_index('accounts', :self)
 
+  before_validation :set_default_verified_at, on: :create, if: :local?
+
   def local?
     domain.nil?
   end
 
   def remote?
     !domain.nil?
+  end
+
+  def verified?
+    verified_at.present?
   end
 
   def moved?
@@ -509,5 +515,9 @@ class Account < ApplicationRecord
   # NOTE: the `account.created` webhook is triggered by the `User` model, not `Account`.
   def trigger_update_webhooks
     TriggerWebhookWorker.perform_async('account.updated', 'Account', id) if local?
+  end
+
+  def set_default_verified_at
+    self.verified_at ||= Time.current unless Setting.require_verification
   end
 end

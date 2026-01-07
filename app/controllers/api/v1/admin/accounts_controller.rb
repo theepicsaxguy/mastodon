@@ -10,7 +10,7 @@ class Api::V1::Admin::AccountsController < Api::BaseController
   before_action -> { authorize_if_got_token! :'admin:write', :'admin:write:accounts' }, except: [:index, :show]
   before_action :set_accounts, only: :index
   before_action :set_account, except: :index
-  before_action :require_local_account!, only: [:enable, :approve, :reject]
+  before_action :require_local_account!, only: [:enable, :approve, :reject, :verify]
 
   after_action :verify_authorized
   after_action :insert_pagination_headers, only: :index
@@ -63,6 +63,12 @@ class Api::V1::Admin::AccountsController < Api::BaseController
     DeleteAccountService.new.call(@account, reserve_email: false, reserve_username: false)
     log_action :reject, @account.user
     render_empty
+  end
+
+  def verify
+    authorize @account, :verify?
+    @account.update!(verified_at: Time.current)
+    render json: @account, serializer: REST::Admin::AccountSerializer
   end
 
   def destroy

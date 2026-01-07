@@ -12,7 +12,9 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
   attributes :domain, :title, :version, :source_url, :description,
              :usage, :thumbnail, :icon, :languages, :configuration,
-             :registrations, :api_versions, :wrapstodon
+             :registrations, :api_versions, :wrapstodon,
+             :require_verification, :unverified_content_visible
+             :require_verification, :unverified_content_visible
 
   has_one :contact, serializer: ContactSerializer
   has_many :rules, serializer: REST::RuleSerializer
@@ -127,6 +129,8 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       message: registrations_enabled? ? nil : registrations_message,
       min_age: Setting.min_age.presence,
       url: ENV.fetch('SSO_ACCOUNT_SIGN_UP', nil),
+      require_verification: Setting.require_verification,
+      unverified_content_visible: Setting.unverified_content_visible,
     }
   end
 
@@ -136,6 +140,14 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
   def wrapstodon
     AnnualReport.current_campaign
+  end
+
+  def require_verification
+    Setting.require_verification
+  end
+
+  def unverified_content_visible
+    Setting.unverified_content_visible
   end
 
   private
@@ -150,6 +162,14 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
   def limited_federation?
     Rails.configuration.x.mastodon.limited_federation_mode
+  end
+
+  def require_verification
+    Setting.require_verification
+  end
+
+  def unverified_content_visible
+    Setting.unverified_content_visible
   end
 
   def markdown

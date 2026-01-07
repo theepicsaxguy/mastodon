@@ -98,6 +98,7 @@ export interface ApiStatusJSON {
   favorites_count: number;
   quotes_count: number;
   edited_at?: string;
+  local_only?: boolean;
 
   favorited?: boolean;
   reblogged?: boolean;

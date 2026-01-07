@@ -271,6 +271,7 @@ namespace :api, format: false do
           post :unsensitive
           post :unsilence
           post :unsuspend
+          post :verify
           post :approve
           post :reject
         end

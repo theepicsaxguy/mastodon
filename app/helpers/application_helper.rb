@@ -23,7 +23,7 @@ module ApplicationHelper
   end
 
   def open_registrations?
-    Setting.registrations_mode == 'open'
+    %w(open open_verification).include?(Setting.registrations_mode)
   end
 
   def approved_registrations?

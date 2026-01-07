@@ -10,6 +10,8 @@ defaults: &defaults
   site_contact_username: ''
   site_contact_email: ''
   registrations_mode: 'none'
+  require_verification: false
+  unverified_content_visible: false
   profile_directory: true
   closed_registrations_message: ''
   local_live_feed_access: 'public'

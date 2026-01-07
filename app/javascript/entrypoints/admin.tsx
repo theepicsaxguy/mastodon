@@ -202,12 +202,14 @@ on(
 const onChangeRegistrationMode = (target: HTMLSelectElement) => {
   const enabled = target.value === 'approved';
 
+  const openModes = ['open', 'open_verification'];
+
   document
     .querySelectorAll<HTMLElement>(
       '.form_admin_settings_registrations_mode .warning-hint',
     )
     .forEach((warning_hint) => {
-      warning_hint.style.display = target.value === 'open' ? 'inline' : 'none';
+      warning_hint.style.display = openModes.includes(target.value) ? 'inline' : 'none';
     });
 
   document

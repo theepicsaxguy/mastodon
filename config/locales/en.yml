@@ -867,9 +867,16 @@ en:
         moderation_recommandation: Please make sure you have an adequate and reactive moderation team before you open registrations to everyone!
         preamble: Control who can create an account on your server.
         title: Registrations
+        require_verification:
+          title: Require moderator verification for new accounts
+          hint: New local accounts start unverified and their posts stay local-only until verified by staff.
+        unverified_content_visible:
+          title: Show unverified content on local timelines
+          hint: Allow posts from unverified accounts to appear locally; they are never federated.
       registrations_mode:
         modes:
           approved: Approval required for sign up
+          open_verification: Anyone can sign up (verification required)
           none: Nobody can sign up
           open: Anyone can sign up
         warning_hint: We recommend using “Approval required for sign up” unless you are confident your moderation team can handle spam and malicious registrations in a timely fashion.

@@ -150,6 +150,11 @@ const messages = defineMessages({
     id: 'account.languages',
     defaultMessage: 'Change subscribed languages',
   },
+  probationary: { id: 'account.probationary', defaultMessage: 'New account' },
+  probationary_tooltip: {
+    id: 'account.probationary.tooltip',
+    defaultMessage: 'This account is in probationary status',
+  },
   openOriginalPage: {
     id: 'account.open_original_page',
     defaultMessage: 'Open original page',
@@ -763,6 +768,14 @@ export const AccountHeader: React.FC<{
       />,
     );
   });
+
+  if (!account.verified_at) {
+    badges.push(
+      <span key='probationary-badge' title={intl.formatMessage(messages.probationary_tooltip)}>
+        <Badge label={<FormattedMessage id='account.probationary' defaultMessage='New account' />} />
+      </span>,
+    );
+  }
 
   return (
     <div className='account-timeline__header'>

@@ -34,6 +34,7 @@ export interface BaseApiAccountJSON {
   locked: boolean;
   noindex?: boolean;
   note: string;
+  verified_at?: string | null;
   roles?: ApiAccountJSON[];
   statuses_count: number;
   uri: string;

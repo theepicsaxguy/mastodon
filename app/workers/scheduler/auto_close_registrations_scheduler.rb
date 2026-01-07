@@ -12,7 +12,7 @@ class Scheduler::AutoCloseRegistrationsScheduler
 
   def perform
     return if Rails.configuration.x.email_domains_allowlist.present? || ENV['DISABLE_AUTOMATIC_SWITCHING_TO_APPROVED_REGISTRATIONS'] == 'true'
-    return unless Setting.registrations_mode == 'open'
+    return unless %w(open open_verification).include?(Setting.registrations_mode)
 
     switch_to_approval_mode! unless active_moderators?
   end

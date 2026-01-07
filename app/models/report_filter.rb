@@ -7,6 +7,7 @@ class ReportFilter
     target_account_id
     by_target_domain
     target_origin
+    target_verified
   ).freeze
 
   attr_reader :params
@@ -49,6 +50,8 @@ class ReportFilter
       Report.where(target_account_id: value)
     when :target_origin
       target_origin_scope(value)
+    when :target_verified
+      target_verified_scope(value)
     else
       raise Mastodon::InvalidParameterError, "Unknown filter: #{key}"
     end
@@ -60,6 +63,17 @@ class ReportFilter
       Report.where(target_account: Account.local)
     when :remote
       Report.where(target_account: Account.remote)
+    else
+      raise Mastodon::InvalidParameterError, "Unknown value: #{value}"
+    end
+  end
+
+  def target_verified_scope(value)
+    case value.to_s
+    when 'unverified'
+      Report.where(target_account: Account.where(verified_at: nil))
+    when 'verified'
+      Report.where(target_account: Account.where.not(verified_at: nil))
     else
       raise Mastodon::InvalidParameterError, "Unknown value: #{value}"
     end
